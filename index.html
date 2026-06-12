@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Mobile Cinema</title>
+        <link rel="icon" type="image/svg" href="./favicon.svg">
+        
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+        
+        <!-- preload icons -->
+        <link rel="preload" as="image" href="./videoControls/captionOn.svg">
+        <link rel="preload" as="image" href="./videoControls/captionsOff.svg">
+        <link rel="preload" as="image" href="./videoControls/pause.svg">
+        <link rel="preload" as="image" href="./videoControls/play.svg">
+        <link rel="preload" as="image" href="./videoControls/settings.svg">
+        <link rel="preload" as="image" href="./videoControls/volumeHigh.svg">
+        <link rel="preload" as="image" href="./videoControls/volumeMid.svg">
+        <link rel="preload" as="image" href="./videoControls/volumeNone.svg">
+        <link rel="preload" as="image" href="./videoControls/fullscreen.svg">
+        <link rel="preload" as="image" href="./videoControls/unfullscreen.svg">
+        <link rel="preload" as="image" href="./videoControls/lSeconds.svg">
+        <link rel="preload" as="image" href="./videoControls/rSeconds.svg">
+        
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+            
+            html,
+            body {
+                font-family: 'Varela Round';
+                color: white;
+                background-color: black;
+                margin: 0;
+                padding: 0;
+                user-select: none;
+            }
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100dvh;
+                overflow: clip;
+            }
+            .watchWrapper {
+                z-index: 0;
+                position: absolute;
+                display: flex;
+                
+                height: 100dvh;
+                width: 100dvw;
+                
+                align-items: center;
+                justify-content: center;
+                margin: 0;
+                padding: 0;
+                
+                overflow: clip;
+            }
+            .watchWrapper.noMouse {
+                cursor: none;
+            }
+            .watchWrapper.sixSeven {
+                transform: skewY(0deg);
+                animation-name: sixSeven;
+                animation-duration: 1.5s;
+                animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+            }
+            
+            @keyframes sixSeven {
+                0% {transform: skewY(0deg);}
+                16.66% {transform: skewY(10deg);}
+                33.32% {transform: skewY(-10deg);}
+                49.98% {transform: skewY(10deg);}
+                66.64% {transform: skewY(-10deg);}
+                83.3% {transform: skewY(10deg);}
+                100% {transform: skewY(0deg);}
+            }
+            .videoElement {
+                position: absolute;
+                background-color: black;
+                aspect-ratio: var(--aspectRatio);
+                width: min(100vw, calc(100vh * var(--aspectRatio)));
+            }
+            .controlsFlex {
+                width: calc(100% - 3rem);
+                height: 2rem;
+                background-color: rgba(0, 0, 0, 0.8);
+                position: absolute;
+                bottom: 1rem;
+                border-radius: 4rem;
+                display: flex;
+                align-items: center;
+                padding: 0.5rem;
+                gap: 0.25rem;
+                outline: 1px solid #6b6969;
+                opacity: 1;
+                
+                transition: bottom 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s linear;
+            }
+            .controlsFlex:hover,
+            .controlsFlex:active {
+                opacity: 1;
+            }
+            .controlsFlex.hidden {
+                bottom: -4rem;
+                transition: bottom 0.5s cubic-bezier(0.11, 0, 0.5, 0);
+            }
+            .button {
+                height: 2rem;
+                aspect-ratio: 1/1;
+                border-radius: 3rem;
+                border: none;
+                background-color: transparent;
+                background-size: 100%;
+                cursor: pointer;
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+                flex-shrink: 0;
+                
+                filter: invert(100%);
+                
+                transition: background-color 0.2s ease-out;
+            }
+            .button:hover {
+                background-color: rgba(0, 0, 0, 0.25);
+            }
+            .button:focus {
+                outline: none;
+                box-shadow: none;
+            }
+            .time {
+                margin-block: 0;
+                font-size: 1rem;
+            }
+            .time.gray {
+                color: #636262;
+            }
+            
+            .playButton {
+                background-image: url(./videoControls/pause.svg);
+                transition: background-image 0.2s linear, background-color 0.2s ease-out;
+            }
+            .playButton.playing {
+                background-image: url("./videoControls/play.svg");
+            }
+            .captionsButton {
+                background-image: url("./videoControls/captionsOff.svg");
+            }
+            .settingsButton {
+                background-image: url("./videoControls/settings.svg");
+                
+                transition: background-color 0.2s ease-out, transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+            }
+            .settingsButton.open {
+                transform: rotate(45deg);
+            }
+            
+            .fullscreenButton {
+                background-image: url("./videoControls/fullscreen.svg");
+            }
+            .fullscreenButton.full {
+                background-image: url("./videoControls/unfullscreen.svg");
+            }
+            
+            .leftSeconds {
+                background-image: url("./videoControls/lSeconds.svg");
+            }
+            .rightSeconds {
+                background-image: url("./videoControls/rSeconds.svg");
+            }
+            
+            .volumeButton {
+                transition: background-image 0.2s linear, background-color 0.2s ease-out;
+            }
+            .volumeButton.none {
+                background-image: url("./videoControls/volumeNone.svg");
+            }
+            .volumeButton.mid {
+                background-image: url("./videoControls/volumeMid.svg");
+            }
+            .volumeButton.high {
+                background-image: url("./videoControls/volumeHigh.svg");
+            }
+            
+            .watchButton {
+                background-image: url("./videoControls/watchButton.svg");
+            }
+            
+            .timeBar {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                align-content: center;
+                
+                cursor: pointer;
+                
+                margin: 0;
+                padding: 0;
+                
+                transition: height 0.1s cubic-bezier(0.33, 1, 0.68, 1);
+            }
+            .timeBarCurrentTime {
+                position: absolute;
+                width: 0;
+                height: var(--timeBarThickness);
+                margin-top: calc(-0.5*var(--timeBarThickness));
+                background-color: #ffffff;
+                border-radius: 1rem;
+            }
+            .timeBarLoaded {
+                position: absolute;
+                width: 0;
+                height: var(--timeBarThickness);
+                margin-top: calc(-0.5*var(--timeBarThickness));
+                background-color: #6b6969;
+                border-radius: 1rem;
+                transition: width 0.1s cubic-bezier(0.33, 1, 0.68, 1);
+            }
+            .timeBarThumb {
+                position: absolute;
+                margin-top: calc(var(--timeBarThickness) * -1.25);
+                height: calc(var(--timeBarThickness) * 2.5);
+                margin-left: calc((var(--timeBarThickness) * -1.25) + 0%);
+                border-radius: 100%;
+                aspect-ratio: 1/1;
+                background-color: #ffffff;
+                transform: scale(0);
+                
+                transition: transform 0.15s ease-out;
+            }
+            .timeBarBG {
+                position: absolute;
+                margin-top: calc(-0.5*var(--timeBarThickness));
+                width: 100%;
+                height: var(--timeBarThickness);
+                background-color: #383838;
+                border-radius: 1rem;
+            }
+            .timeBar:hover .timeBarThumb,
+            .timeBar:active .timeBarThumb {
+                transform: scale(1);
+                cursor: pointer;
+            }
+            
+            .timeVisualFlex {
+                display: flex;
+            }
+            .bufferingSpinner {
+                pointer-events: none;
+                position: absolute;
+                aspect-ratio: 1/1;
+                height: 10rem;
+                opacity: 0;
+                animation: spin 1s linear infinite;
+                
+                transition: opacity 0.15s ease-in-out;
+            }
+            .bufferingSpinner.visible {
+                opacity: 0.75;
+            }
+            
+            @keyframes spin {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+              }
+            }
+            
+            .volumeDiv {
+                width: 2rem;
+                height: 2rem;
+                border-radius: 2rem;
+                flex-shrink: 0;
+                
+                gap: 0.25rem;
+                display: flex;
+                flex-direction: row-reverse;
+                
+                border: 1px solid rgba(107, 105, 105, 0);
+                margin-left: 1px;
+                
+                transition: width 0.25s cubic-bezier(0.33, 1, 0.68, 1), border 0.25s linear, margin-left 0.25s linear;
+            }
+            .volumeDiv:hover,
+            .volumeDiv:active{
+                width: 8rem;
+                border: 1px solid #6b6969;
+            }
+            
+            .volumeBar {
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+                display: block;
+                position: relative;
+                align-content: center;
+            }
+            .volumeBarBg {
+                position: absolute;
+                background-color: #383838;
+                border-radius: 1rem;
+                width: 100%;
+                margin-top: calc(-0.5*var(--timeBarThickness));
+                height: var(--timeBarThickness);
+                z-index: 2;
+            }
+            .volumeBarFill {
+                position: absolute;
+                background-color: #ffffff;
+                border-radius: 1rem;
+                width: 0;
+                margin-top: calc(-0.5*var(--timeBarThickness));
+                height: var(--timeBarThickness);
+                z-index: 2;
+            }
+            .volumeBarThumb {
+                position: absolute;
+                background-color: #ffffff;
+                border-radius: 1rem;
+                
+                height: calc(var(--timeBarThickness) * 2.5);
+                aspect-ratio: 1/1;
+                max-width: 100%;
+                
+                margin-top: calc(var(--timeBarThickness) * -1.25);
+                margin-left: calc((var(--timeBarThickness) * -1.25) + 0%);
+                z-index: 2;
+            }
+            
+            .loadingBox {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-color: black;
+                z-index: 3;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                pointer-events: none;
+                
+                transition: opacity 0.25s linear;
+            }
+            .loadingBoxMainText {
+                font-size: 50px;
+                width: 100%;
+                text-align: center;
+                margin-block: 0;
+            }
+            .loadingOutput {
+                resize: none;
+                width: 500px;
+                height: 300px;
+                outline: none;
+                cursor: auto;
+                border: none;
+                background-color: #1a1a1a;
+                border-radius: 10px;
+                text-align: center;
+                user-select: none;
+                color: white;
+                font-family: "Varela Round";
+                font-size: 20px;
+                scrollbar-width: none;
+            }
+            .loadingBox.visible {
+                pointer-events: auto;
+                opacity: 1;
+            }
+            
+            :root {
+                --aspectRatio: 16/9;
+                --timeBarThickness: 0.25rem;
+                --movieSize: 200px;
+            }
+            
+            .watchMenuWrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                z-index: 2;
+                
+                backdrop-filter: blur(10px);
+                
+                transform: translateY(-100%);
+                transition: transform 0.5s cubic-bezier(0.32, 0, 0.67, 0);
+            }
+            .watchMenuWrapper.open {
+                transform: translateY(0);
+                transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+            }
+            .watchMainContent {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                box-sizing: border-box;
+                height: 100%;
+                width: 100%;
+                padding: 0.5rem;
+                gap: 1rem;
+                overflow-y: auto;
+                scrollbar-width: thin;
+            }
+            .watchFooter {
+                padding: 0.5rem;
+                height: 3rem;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                box-sizing: border-box;
+            }
+            .watchSearch {
+                font-family: "Varela Round";
+                font-size: 1.5rem;
+                width: 85%;
+                outline: none;
+                border: none;
+                border-radius: 0.5rem;
+                background-color: #ffffff;
+                color: #000000;
+                
+                transition: outline 0.1s linear;
+            }
+            .watchSearch::placeholder {
+                color: #6b6969;
+            }
+            .itemSection {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                /*background-color: rgba(255, 255, 255, 0.2);*/
+                width: 100%;
+                height: fit-content;
+            }
+            .itemSection .title {
+                margin-block: 0;
+                font-size: 2rem;
+                text-align: center;
+            }
+            .itemSectionGrid {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, max(var(--movieSize)));
+                gap: 1rem;
+                justify-content: center;
+            }
+            .watchItem {
+                position: relative;
+                width: var(--movieSize);
+                aspect-ratio: 2/3;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                overflow: clip;
+                transition: filter 0.2s ease-out;
+                filter: drop-shadow(0 0 0 transparent);
+            }
+            .watchItem p {
+                margin-block: 0;
+                text-align: center;
+            }
+            .watchItem:active {
+                transform: scale(0.99);
+            }
+            .watchItem:hover {
+                filter: drop-shadow(0 0 5px white);
+            }
+            .watchItem:hover .watchItemImg {
+                transform: scale(1.05);
+            }
+            .watchItem:hover .watchItemTitle {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            .watchItem:hover .watchItemType {
+                transform: translateY(0);
+            }
+            .watchItem:hover .watchItemGradient {
+                opacity: 1;
+            }
+            .watchItemImg {
+                display: block;
+                width: 100%;
+                height: 100%;
+                
+                transition: all 0.25s cubic-bezier(0.5, 1, 0.89, 1);
+            }
+            .watchItemTitle {
+                box-sizing: border-box; 
+                position: absolute;
+                bottom: 0;
+                margin-block: 0;
+                width: 100%;
+                text-align: center;
+                color: #ffffff;
+                font-size: 1cqw;
+                padding: 0.25rem;
+                
+                transform: translateY(20%);
+                opacity: 0;
+                transition: opacity 0.2s cubic-bezier(0.5, 1, 0.89, 1), transform 0.2s cubic-bezier(0.5, 1, 0.89, 1);
+            }
+            .watchItemType {
+                font-size: 0.75cqw;
+                position: absolute;
+                top: 0.25rem;
+                left: 0.25rem;
+                background-color: rgba(0, 0, 0, 0.5);
+                padding: 0.25rem;
+                border-radius: 0.5rem;
+                outline: 1px solid gray;
+                transform: translateY(-120%);
+                transition: transform 0.2s cubic-bezier(0.5, 1, 0.89, 1);
+            }
+            .watchItemGradient {
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(0deg,rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 50%);
+                opacity: 0;
+                transition: all 0.2s cubic-bezier(0.5, 1, 0.89, 1);
+            }
+            .watchClose {
+                height: 2rem;
+                border-radius: 0;
+                filter: drop-shadow(0 0 0px black) invert(100%);
+                border-radius: 50% 50% 0 0;
+                cursor: pointer;
+                position: absolute;
+                margin-left: 50%;
+                transform: translateX(-50%);
+                
+                transition: filter 0.1s ease-out;
+            }
+            .watchClose:hover {
+                filter: drop-shadow(0 0 5px black) invert(100%);
+            }
+            
+            .homeURL {
+                font-size: 1.5rem;
+                margin-block: 0;
+                cursor:pointer;
+                color: #ffffff;
+                text-decoration: none;
+                
+                transition: transform 0.1s ease-out;
+            }
+            .homeURL:hover {
+                transform: scale(1.1);
+            }
+            
+            .settingsWrapper {
+                width: 20rem;
+                height: 0rem;
+                background-color: rgba(0, 0, 0, 0.8);
+                position: absolute;
+                right: 0;
+                bottom: 5rem;
+                box-sizing: border-box;
+                overflow: hidden;
+                padding: 0;
+                outline: 0px solid transparent;
+                border-radius: 2rem;
+                
+                transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+                
+                overflow-x: clip;
+                overflow-y: scroll;
+                
+                display: flex;
+                flex-direction: row;
+                
+                scrollbar-width: none;
+            }
+            .settingsWrapper.visible {
+                height: 25rem;
+                outline: 1px solid #6b6969;
+            }
+            
+            .pauseBody {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+            }
+            
+            .settingDropdownBody {
+                width: 100%;
+                max-width: 100%;
+                margin: 1rem;
+                border-radius: 1.5rem;
+                height: fit-content;
+                transition: outline .25s cubic-bezier(0.33, 1, 0.68, 1);
+                outline: 1px solid transparent;
+            }
+            .settingDropdownBody:hover {
+                outline: 1px solid #6b6969;
+            }
+            .settingDropdownBody:hover .settingDropdownDropdown {
+                height: calc-size(fit-content, size);
+            }
+            .settingDropdownBody p {
+                margin-block: 0;
+            }
+            .settingDropdownTitle {
+                padding: 0.5rem;
+                display: flex;
+                align-items: center;
+            }
+            .settingDropdownTitleMain {
+                font-size: 1.25rem;
+                width: 100%;
+            }
+            .settingDropdownTitleSec {
+                font-size: 1rem;
+                color: #969696;
+            }
+            .settingDropdownDropdown {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                overflow: clip;
+                width: 100%;
+                height: 0;
+                transition: height .25s cubic-bezier(0.33, 1, 0.68, 1);
+                padding: 0 0.5rem 0 0.5rem;
+                box-sizing: border-box;
+            }
+            .settingDropdownButton {
+                font-family: 'Varela Round';
+                font-size: 1.25rem;
+                background-color: transparent;
+                border: 0;
+                outline: 0;
+                color: white;
+                cursor: pointer;
+                padding: 0.25rem;
+                width: 100%;
+                text-align: left;
+                border-radius: 1rem;
+                
+                transition: background-color 0.1s ease-out;
+            }
+            .settingDropdownButton:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+            
+            .githubWarning {
+                font-size: 1rem;
+                color: white;
+                z-index: 99999;
+                opacity: 0.5;
+                position: absolute;
+                bottom: 0rem;
+                pointer-events: none;
+                margin-block: 0;
+                background-color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="watchWrapper" class="watchWrapper">
+            
+            <video class="videoElement" id="watchVideo">
+                You do not have video support
+            </video>
+            
+            <div class="pauseBody" id="pauseBody"></div>
+            
+            <div id="controls" class="controlsFlex">
+                <button class="button playButton" id="playButton"></button>
+                
+                <button class="button leftSeconds" id="leftSeconds"></button>
+                <button class="button rightSeconds" id="rightSeconds"></button>
+                
+                <div class="timeVisualFlex">
+                    <p class='time' id="currentTime">0:00</p>
+                    <p class='time gray'>/</p>
+                    <p class="time gray" id="totalTime">0:00</p>
+                </div>
+                
+                <div></div> <!-- the blank divs above and below are spacers for time bar -->
+                <div class="timeBar" id="timeBar">
+                    <div class="timeBarBG" id="timeBarBG"></div>
+                    <div class="timeBarLoaded" id="timeBarLoaded"></div>
+                    <div class="timeBarCurrentTime" id="timeBarCurrentTime"></div>
+                    <div class="timeBarThumb" id="timeBarThumb"></div>
+                </div>
+                <div></div>
+                
+                <div class="volumeDiv">
+                    <button class="button volumeButton none" id="volumeButton"></button>
+                    <div></div>
+                    <div></div>
+                    <div id="volumeBar" class="volumeBar">
+                        <div class="volumeBarBg"></div>
+                        <div id="volumeFill" class="volumeBarFill"></div>
+                        <div id="volumeThumb" class="volumeBarThumb"></div>
+                    </div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                
+                <!--<button class="button captionsButton" id="captionsButton"></button>-->
+                <button class="button settingsButton" id="settingsButton"></button>
+                <button class="button watchButton" id="watchButton"></button>
+                <button class="button fullscreenButton" id="fullscreenButton"></button>
+                
+                <div id="settingsWrapper" class="settingsWrapper">
+                    <div class="settingDropdownBody">
+                        <p class="settingDropdownTitle"><span class="settingDropdownTitleMain">Quality</span><span id="settingsSetQuality" class="settingDropdownTitleSec">1280x720</span></p>
+                        <div id="qualitySettingButtons" class="settingDropdownDropdown">
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <img id="buffer" draggable="false" src="./videoControls/buffering.svg" class="bufferingSpinner">
+            
+            <div id="watchMenu" class="watchMenuWrapper">
+                <div class="watchMainContent">
+                    <input class="watchSearch" type="text" placeholder="Search for a movie or show...">
+                    
+                    <div class="itemSection">
+                        <p class="title">All Movies and Shows</p>
+                        
+                        <div id="allBox" class="itemSectionGrid">
+                        </div>
+                    </div>
+                    <p>Due to some technical stuff, Mobile Cinema currently only has movies. Sorry!</p>
+                    <p id="betaTestTextWatch" style="font-size: 2rem; text-align: center;">Thank you for being a beta tester of Mobile Cinema! Some features obviously are not fully implemented (like the search bar), but everything that has to do with loading and watching a movie should work, so please report any bugs to the <a href="">discord server.</a> Thanks!</p>
+                </div>
+                <div class="watchFooter">
+                    <a id="pongonnetText" href="../" class="homeURL">pongon.net</a>
+                    <img draggable="false" id="watchClose" class="watchClose" src="videoControls/watchClose.svg">
+                </div>
+            </div>
+            
+            <div id="loadingBox" class="loadingBox visible">
+                <p id="loadingMainText" class="loadingBoxMainText">Loading...</p>
+                <br>
+                <textarea id="loadingConsole" class="loadingOutput" readonly></textarea>
+            </div>
+        </div>
+        
+        <script src="./sitejs.js"></script>
+    </body>
+</html>

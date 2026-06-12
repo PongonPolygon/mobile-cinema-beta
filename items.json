@@ -1,0 +1,72 @@
+{
+    "a-minecraft-movie": {
+        "name": "A Minecraft Movie",
+        "file": "https://dn711502.ca.archive.org/0/items/a-minecraft-movie-hd-1080-p-cgi_202506/A%20Minecraft%20Movie%20%28HD%201080P%20CGI%29.mp4",
+        "type": 1
+    },
+    
+    "fantastic-mr-fox": {
+        "name": "Fantastic Mr. Fox",
+        "file": "https://dn721807.ca.archive.org/0/items/fantastic.-mr.-fox.-2009.720p.-br-rip.x-264.-yify/Fantastic.Mr.Fox.2009.720p.BrRip.x264.YIFY.mp4",
+        "type": 1
+    },
+    
+    "matilda": {
+        "name": "Matilda",
+        "file": "https://ia800408.us.archive.org/23/items/203fe130cf63eb5dc7a2adc12ec398bc6171d1c055d0cf64711bd5f9a9675bc5d81201d0f1641e00/Matilda%201996%20720p.mp4",
+        "type": 1
+    },
+    
+    "into-the-spider-verse": {
+        "name": "Spider-Man: Into The Spider-Verse",
+        "file": "https://dn710008.ca.archive.org/0/items/spider-man-into-the-spider-verse-2018-1080p-blu-ray-yts.-mx/Spider-Man%20Into%20The%20Spider-Verse%20%282018%29%20%5BBluRay%5D%20%5B1080p%5D%20%5BYTS.AM%5D/Spider-Man.Into.The.Spider-Verse.2018.1080p.BluRay.x264-%5BYTS.AM%5D.mp4",
+        "type": 1
+    },
+    
+    "across-the-spider-verse": {
+        "name": "Spider-Man: Across The Spider-Verse",
+        "file": "https://server1.iwaatch.com/media/Spider-Man:_Across_the_Spider-Verse/movie_1080.mp4",
+        "qualitiess": [
+            {
+                "file": "https://server1.iwaatch.com/media/Spider-Man:_Across_the_Spider-Verse/movie_720.mp4",
+                "resolution": "1280x536"
+            },
+            {
+                "file": "https://server1.iwaatch.com/media/Spider-Man:_Across_the_Spider-Verse/movie_1080.mp4",
+                "resolution": "1920x804"
+            }
+        ],
+        "type": 1
+    },
+    "isle-of-dogs": {
+        "name": "Isle of Dogs",
+        "file": "https://server1.iwaatch.com/media/Isle_of_Dogs/movie_1080.mp4",
+        "qualitiess": [
+            {
+                "file": "https://server1.iwaatch.com/media/Isle_of_Dogs/movie_1080.mp4",
+                "resolution": "1920x800"
+            },
+            {
+                "file": "https://server1.iwaatch.com/media/Isle_of_Dogs/movie_720.mp4",
+                "resolution": "1282x534"
+            }
+        ],
+        "type": 1
+    },
+    
+    "project-hail-mary": {
+        "name": "Project Hail Mary",
+        "file": "https://server1.iwaatch.com/media/Project-Hail-Mary2026/movie_1080.mp4",
+        "qualitiess": [
+            {
+                "file": "https://server1.iwaatch.com/media/Project-Hail-Mary2026/movie_1080.mp4",
+                "resolution": "1920x800"
+            },
+            {
+                "file": "https://server1.iwaatch.com/media/Project-Hail-Mary2026/movie_720.mp4",
+                "resolution": "1280x720"
+            }
+        ],
+        "type": 1
+    }
+}

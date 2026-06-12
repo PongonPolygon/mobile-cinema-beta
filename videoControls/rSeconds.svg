@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="50"
+   height="50"
+   viewBox="0 0 13.229166 13.229167"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="rSeconds.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="12.091526"
+     inkscape:cx="14.266189"
+     inkscape:cy="31.302914"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="1072"
+     inkscape:window-y="828"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="RoundedArrow"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="0.5"
+       markerHeight="0.5"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="m -0.21114562,-4.1055728 6.42229122,3.21114561 a 1,1 90 0 1 0,1.78885438 L -0.21114562,4.1055728 A 1.236068,1.236068 31.717474 0 1 -2,3 v -6 a 1.236068,1.236068 148.28253 0 1 1.78885438,-1.1055728 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path8" />
+    </marker>
+  </defs>
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.79374999;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#RoundedArrow);paint-order:stroke markers fill"
+     id="path6"
+     d="m -8.8132515,6.8788239 a 4.5023217,4.5023217 0 0 1 3.1836222,-3.1836224 4.5023217,4.5023217 0 0 1 4.3489089,1.1652865 4.5023217,4.5023217 0 0 1 1.16528663,4.3489089"
+     transform="matrix(-0.96592583,0.25881905,0.25881905,0.96592583,0,0)" />
+  <path
+     d="m 3.933402,11.302503 q -0.132095,0 -0.220158,-0.08806 -0.08806,-0.08806 -0.08806,-0.220158 0,-0.132095 0.08806,-0.220158 0.08806,-0.0954 0.220158,-0.0954 H 4.8066967 V 6.9580454 L 4.058158,7.3249759 q -0.03669,0.014677 -0.07339,0.029355 -0.03669,0.014677 -0.0954,0.014677 -0.139433,0 -0.227497,-0.088063 -0.08806,-0.088063 -0.08806,-0.227497 0,-0.205481 0.190804,-0.300883 L 4.7626651,6.231523 Q 4.8654056,6.180153 4.9681462,6.180153 H 5.122257 q 0.1467722,0 0.2495127,0.1027406 0.1027406,0.1027405 0.1027406,0.2495127 v 4.1463147 h 0.7265224 q 0.1320949,0 0.2201583,0.0954 0.095402,0.08806 0.095402,0.220158 0,0.132095 -0.095402,0.220158 -0.088063,0.08806 -0.2201583,0.08806 z m 4.5846026,0.07339 q -0.6604749,0 -1.1081301,-0.330238 Q 6.9695579,10.715414 6.7493996,10.120986 6.5292413,9.526559 6.5292413,8.7413277 q 0,-0.7852313 0.2201583,-1.3796587 0.2201583,-0.5944275 0.6604749,-0.9246649 0.4476552,-0.3302375 1.1081301,-0.3302375 0.6604749,0 1.1007915,0.3302375 0.4403169,0.3302374 0.6604749,0.9246649 0.227497,0.5944274 0.227497,1.3796587 0,0.7852313 -0.227497,1.3796583 -0.220158,0.594428 -0.6604749,0.924665 -0.4403166,0.330238 -1.1007915,0.330238 z m 0,-0.616444 q 0.6531363,0 0.9833738,-0.543057 0.337576,-0.5430568 0.337576,-1.4750603 0,-0.9246649 -0.337576,-1.4677221 -0.3302375,-0.5430571 -0.9833738,-0.5430571 -0.6457977,0 -0.9833737,0.5430571 -0.3375761,0.5430572 -0.3375761,1.4677221 0,0.9320035 0.3375761,1.4750603 0.337576,0.543057 0.9833737,0.543057 z"
+     id="text6"
+     style="font-size:7.33861px;line-height:0;font-family:'Varela Round';-inkscape-font-specification:'Varela Round';text-align:center;letter-spacing:-0.00570238px;text-anchor:middle;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.26458333;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+     aria-label="10" />
+</svg>
